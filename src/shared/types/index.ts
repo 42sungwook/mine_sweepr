@@ -16,6 +16,8 @@ export interface GameState {
   flagCount: number
   timer: number
   isFirstClick: boolean
+  boardWidth: number
+  boardHeight: number
 }
 
 export type GameAction =

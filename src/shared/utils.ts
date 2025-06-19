@@ -19,9 +19,11 @@ export const generateMines = (
 export const getNeighbors = (
   row: number,
   col: number,
-  size: number
+  width: number,
+  height: number
 ): [number, number][] => {
   const neighbors: [number, number][] = []
+
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
       if (i === 0 && j === 0) {
@@ -31,7 +33,7 @@ export const getNeighbors = (
       const newRow = row + i
       const newCol = col + j
 
-      if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
+      if (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width) {
         neighbors.push([newRow, newCol])
       }
     }

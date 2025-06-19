@@ -1,14 +1,24 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 import { type GameState, type Cell } from '@/shared/types'
-import { BOARD_SIZE, MINE_COUNT } from '@/shared/constants'
+import { DIFFICULTY_SETTINGS, type DifficultyLevel } from '@/shared/constants'
 import { generateMines, getNeighbors } from '@/shared/utils'
 
 const createInitialBoard = (): Cell[][] => {
+  return createInitialBoardWithSize(
+    DIFFICULTY_SETTINGS.INTERMEDIATE.width,
+    DIFFICULTY_SETTINGS.INTERMEDIATE.height
+  )
+}
+
+const createInitialBoardWithSize = (
+  width: number,
+  height: number
+): Cell[][] => {
   const board: Cell[][] = []
-  for (let row = 0; row < BOARD_SIZE; row++) {
+  for (let row = 0; row < height; row++) {
     board[row] = []
-    for (let col = 0; col < BOARD_SIZE; col++) {
+    for (let col = 0; col < width; col++) {
       board[row][col] = {
         id: `${row}-${col}`,
         row,
@@ -27,29 +37,32 @@ const createInitialBoard = (): Cell[][] => {
 const placeMines = (
   board: Cell[][],
   excludeRow: number,
-  excludeCol: number
+  excludeCol: number,
+  mineCount: number
 ): Cell[][] => {
   const newBoard = board.map((row) =>
     row.map((cell) => ({ ...cell, isWrongFlag: false }))
   )
-  const excludeIndex = excludeRow * BOARD_SIZE + excludeCol
-  const mines = generateMines(BOARD_SIZE * BOARD_SIZE, MINE_COUNT, excludeIndex)
+  const boardWidth = board[0]?.length || 0
+  const boardHeight = board.length
+  const excludeIndex = excludeRow * boardWidth + excludeCol
+  const mines = generateMines(boardWidth * boardHeight, mineCount, excludeIndex)
 
   mines.forEach((index) => {
-    const row = Math.floor(index / BOARD_SIZE)
-    const col = index % BOARD_SIZE
+    const row = Math.floor(index / boardWidth)
+    const col = index % boardWidth
     newBoard[row][col].isMine = true
   })
 
   // 주변 지뢰 개수 계산
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    for (let col = 0; col < BOARD_SIZE; col++) {
+  for (let row = 0; row < boardHeight; row++) {
+    for (let col = 0; col < boardWidth; col++) {
       if (!newBoard[row][col].isMine) {
-        const neighbors = getNeighbors(row, col, BOARD_SIZE)
-        const mineCount = neighbors.filter(
+        const neighbors = getNeighbors(row, col, boardWidth, boardHeight)
+        const neighborMineCount = neighbors.filter(
           ([r, c]) => newBoard[r][c].isMine
         ).length
-        newBoard[row][col].neighborMines = mineCount
+        newBoard[row][col].neighborMines = neighborMineCount
       }
     }
   }
@@ -65,6 +78,8 @@ const revealEmptyCells = (
   const newBoard = board.map((row) => row.map((cell) => ({ ...cell })))
   const visited = new Set<string>()
   const queue: [number, number][] = [[startRow, startCol]]
+  const boardWidth = board[0]?.length || 0
+  const boardHeight = board.length
 
   while (queue.length > 0) {
     const [row, col] = queue.shift()!
@@ -82,7 +97,7 @@ const revealEmptyCells = (
     }
 
     if (newBoard[row][col].neighborMines === 0) {
-      const neighbors = getNeighbors(row, col, BOARD_SIZE)
+      const neighbors = getNeighbors(row, col, boardWidth, boardHeight)
 
       neighbors.forEach(([r, c]) => {
         if (!newBoard[r][c].isRevealed) {
@@ -98,10 +113,12 @@ const revealEmptyCells = (
 const initialState: GameState = {
   board: createInitialBoard(),
   gameStatus: 'waiting',
-  mineCount: MINE_COUNT,
+  mineCount: DIFFICULTY_SETTINGS.INTERMEDIATE.mines,
   flagCount: 0,
   timer: 0,
-  isFirstClick: true
+  isFirstClick: true,
+  boardWidth: DIFFICULTY_SETTINGS.INTERMEDIATE.width,
+  boardHeight: DIFFICULTY_SETTINGS.INTERMEDIATE.height
 }
 
 const gameSlice = createSlice({
@@ -109,7 +126,10 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     initGame: (state) => {
-      state.board = createInitialBoard()
+      state.board = createInitialBoardWithSize(
+        state.boardWidth,
+        state.boardHeight
+      )
       state.gameStatus = 'waiting'
       state.flagCount = 0
       state.timer = 0
@@ -133,7 +153,7 @@ const gameSlice = createSlice({
       }
 
       if (state.isFirstClick) {
-        state.board = placeMines(state.board, row, col)
+        state.board = placeMines(state.board, row, col, state.mineCount)
         state.isFirstClick = false
         state.gameStatus = 'playing'
       }
@@ -155,12 +175,12 @@ const gameSlice = createSlice({
         state.board = revealEmptyCells(state.board, row, col)
 
         // 승리 조건 확인
-        const totalCells = BOARD_SIZE * BOARD_SIZE
+        const totalCells = state.boardWidth * state.boardHeight
         const revealedCells = state.board
           .flat()
           .filter((cell) => cell.isRevealed).length
 
-        if (revealedCells === totalCells - MINE_COUNT) {
+        if (revealedCells === totalCells - state.mineCount) {
           state.gameStatus = 'won'
         }
       }
@@ -194,12 +214,49 @@ const gameSlice = createSlice({
       if (state.gameStatus === 'playing' && state.timer < 999) {
         state.timer += 1
       }
+    },
+
+    setDifficulty: (state, action: PayloadAction<DifficultyLevel>) => {
+      const difficulty = DIFFICULTY_SETTINGS[action.payload]
+      state.boardWidth = difficulty.width
+      state.boardHeight = difficulty.height
+      state.mineCount = difficulty.mines
+      state.board = createInitialBoardWithSize(
+        difficulty.width,
+        difficulty.height
+      )
+      state.gameStatus = 'waiting'
+      state.flagCount = 0
+      state.timer = 0
+      state.isFirstClick = true
+    },
+
+    setCustomDifficulty: (
+      state,
+      action: PayloadAction<{ width: number; height: number; mines: number }>
+    ) => {
+      const { width, height, mines } = action.payload
+      state.boardWidth = width
+      state.boardHeight = height
+      state.mineCount = mines
+      state.board = createInitialBoardWithSize(width, height)
+      state.gameStatus = 'waiting'
+      state.flagCount = 0
+      state.timer = 0
+      state.isFirstClick = true
     }
   }
 })
 
 // actions
-export const { initGame, revealCell, toggleFlag, tickTimer } = gameSlice.actions
+export const {
+  initGame,
+  revealCell,
+  toggleFlag,
+  tickTimer,
+  setDifficulty,
+  setCustomDifficulty
+} = gameSlice.actions
 
 // reducer
 export default gameSlice.reducer

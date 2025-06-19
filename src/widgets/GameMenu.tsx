@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 import { useAppDispatch } from '@/shared/store'
-import { initGame } from '@/shared/store/slices'
+import { initGame, setDifficulty } from '@/shared/store/slices'
+import type { DifficultyLevel } from '@/shared/constants'
 
 import styles from './GameMenu.module.scss'
 
@@ -49,16 +50,16 @@ const GameMenu: React.FC = () => {
         dispatch(initGame())
         break
       case 'beginner':
-        console.log('Beginner mode')
+        dispatch(setDifficulty('BEGINNER' as DifficultyLevel))
         break
       case 'intermediate':
-        console.log('Intermediate mode')
+        dispatch(setDifficulty('INTERMEDIATE' as DifficultyLevel))
         break
       case 'expert':
-        console.log('Expert mode')
+        dispatch(setDifficulty('EXPERT' as DifficultyLevel))
         break
       case 'custom':
-        console.log('Custom mode')
+        // TODO: Custom 설정 모달 열기
         break
       case 'exit':
         console.log('Exit game')
