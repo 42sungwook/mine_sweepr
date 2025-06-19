@@ -41,7 +41,7 @@ const placeMines = (
     newBoard[row][col].isMine = true
   })
 
-  // Calculate neighbor mine counts
+  // 주변 지뢰 개수 계산
   for (let row = 0; row < BOARD_SIZE; row++) {
     for (let col = 0; col < BOARD_SIZE; col++) {
       if (!newBoard[row][col].isMine) {
@@ -76,7 +76,10 @@ const revealEmptyCells = (
 
     visited.add(cellId)
 
-    newBoard[row][col].isRevealed = true
+    // 플래그된 셀은 열지 않기
+    if (!newBoard[row][col].isFlagged) {
+      newBoard[row][col].isRevealed = true
+    }
 
     if (newBoard[row][col].neighborMines === 0) {
       const neighbors = getNeighbors(row, col, BOARD_SIZE)
@@ -138,7 +141,7 @@ const gameSlice = createSlice({
       if (cell.isMine) {
         state.gameStatus = 'lost'
 
-        // Reveal all mines and mark wrong flags
+        // 모든 지뢰 표시 및 잘못된 플래그 표시
         state.board.forEach((row) => {
           row.forEach((cell) => {
             if (cell.isMine) {
@@ -151,7 +154,7 @@ const gameSlice = createSlice({
       } else {
         state.board = revealEmptyCells(state.board, row, col)
 
-        // Check win condition
+        // 승리 조건 확인
         const totalCells = BOARD_SIZE * BOARD_SIZE
         const revealedCells = state.board
           .flat()
