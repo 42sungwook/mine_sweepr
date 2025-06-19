@@ -1,10 +1,3 @@
-// Variables
-$primary-bg: #c0c0c0;
-$dark-shadow: #808080;
-$light-shadow: #ffffff;
-$digital-bg: #000000;
-$digital-color: #ff0000;
-
 .gameHeader {
   display: flex;
   align-items: center;
@@ -30,8 +23,8 @@ $digital-color: #ff0000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $digital-bg;
-  color: $digital-color;
+  background: $timer-bg;
+  color: $timer-color;
   font-family: 'Courier New', monospace;
   font-size: 22px;
   font-weight: bold;
@@ -44,7 +37,7 @@ $digital-color: #ff0000;
 
   width: 50px;
   height: 32px;
-  text-shadow: 0 0 2px $digital-color;
+  text-shadow: 0 0 2px $timer-color;
   letter-spacing: 1px;
   line-height: 1;
 
