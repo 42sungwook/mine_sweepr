@@ -1,0 +1,12 @@
+.gameBoard {
+  display: inline-block;
+  border: $inset-border;
+  background: $primary-bg;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.boardRow {
+  display: flex;
+  line-height: 0;
+}

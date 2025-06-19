@@ -14,6 +14,9 @@ export default defineConfig({
           @use "${fileURLToPath(
             new URL('./src/shared/styles/mixins', import.meta.url)
           )}" as *;
+					@use "${fileURLToPath(
+            new URL('./src/shared/styles/variables', import.meta.url)
+          )}" as *;
         `
       }
     }

@@ -4,8 +4,6 @@ import { Provider } from 'react-redux'
 import { store } from '@/shared/store'
 import { GamePage } from '@/pages'
 
-import './App.scss'
-
 //
 //
 //
