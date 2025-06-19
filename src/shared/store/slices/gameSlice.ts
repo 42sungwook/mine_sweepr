@@ -15,6 +15,7 @@ const createInitialBoard = (): Cell[][] => {
         col,
         isMine: false,
         isRevealed: false,
+        isFlagged: false,
         neighborMines: 0
       }
     }
@@ -118,6 +119,7 @@ const gameSlice = createSlice({
 
       if (
         cell.isRevealed ||
+        cell.isFlagged ||
         state.gameStatus === 'won' ||
         state.gameStatus === 'lost'
       ) {
@@ -154,12 +156,36 @@ const gameSlice = createSlice({
           state.gameStatus = 'won'
         }
       }
+    },
+
+    toggleFlag: (
+      state,
+      action: PayloadAction<{ row: number; col: number }>
+    ) => {
+      const { row, col } = action.payload
+      const cell = state.board[row][col]
+
+      if (
+        cell.isRevealed ||
+        state.gameStatus === 'won' ||
+        state.gameStatus === 'lost'
+      ) {
+        return
+      }
+
+      if (cell.isFlagged) {
+        cell.isFlagged = false
+        state.flagCount -= 1
+      } else {
+        cell.isFlagged = true
+        state.flagCount += 1
+      }
     }
   }
 })
 
 // actions
-export const { initGame, revealCell } = gameSlice.actions
+export const { initGame, revealCell, toggleFlag } = gameSlice.actions
 
 // reducer
 export default gameSlice.reducer

@@ -5,6 +5,7 @@ export interface Cell {
   isMine: boolean
   isRevealed: boolean
   neighborMines: number
+  isFlagged: boolean
 }
 
 export interface GameState {
