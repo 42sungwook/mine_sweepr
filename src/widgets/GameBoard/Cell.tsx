@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 
 import { type Cell as CellType } from '@/shared/types'
 import { useAppDispatch } from '@/shared/store'
@@ -18,7 +18,7 @@ interface CellProps {
   cell: CellType
 }
 
-const MOBILE_DOUBLE_TAP_DELAY = 800 // ms
+const MOBILE_DOUBLE_TAP_DELAY = 500 // ms
 
 //
 //
@@ -27,24 +27,35 @@ const MOBILE_DOUBLE_TAP_DELAY = 800 // ms
 const Cell: React.FC<CellProps> = memo(({ cell }) => {
   const dispatch = useAppDispatch()
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (cell.isFlagged || cell.isRevealed) {
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (cell.isFlagged || cell.isRevealed) {
+        e.preventDefault()
+        return
+      }
+      dispatch(revealCell({ row: cell.row, col: cell.col }))
+    },
+    [cell.row, cell.col, cell.isFlagged, cell.isRevealed, dispatch]
+  )
+
+  const handleRightClick = useCallback(
+    (e: React.MouseEvent) => {
       e.preventDefault()
-      return
-    }
-    dispatch(revealCell({ row: cell.row, col: cell.col }))
-  }
+      e.stopPropagation()
 
-  const handleRightClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+      // target이 currentTarget의 자식이 아닌 경우에만 중단
+      if (!e.currentTarget.contains(e.target as Node)) {
+        return
+      }
 
-    if (cell.isRevealed) {
-      return
-    }
+      if (cell.isRevealed) {
+        return
+      }
 
-    dispatch(toggleFlag({ row: cell.row, col: cell.col }))
-  }
+      dispatch(toggleFlag({ row: cell.row, col: cell.col }))
+    },
+    [cell.row, cell.col, cell.isRevealed, dispatch]
+  )
 
   const lastTapTimeRef = React.useRef<number>(0)
 
