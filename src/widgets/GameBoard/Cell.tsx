@@ -17,6 +17,8 @@ interface CellProps {
   cell: CellType
 }
 
+const MOBILE_DOUBLE_TAP_DELAY = 800 // ms
+
 //
 //
 //
@@ -24,13 +26,42 @@ interface CellProps {
 const Cell: React.FC<CellProps> = memo(({ cell }) => {
   const dispatch = useAppDispatch()
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (cell.isFlagged || cell.isRevealed) {
+      e.preventDefault()
+      return
+    }
     dispatch(revealCell({ row: cell.row, col: cell.col }))
   }
 
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
+
+    if (cell.isRevealed) {
+      return
+    }
+
     dispatch(toggleFlag({ row: cell.row, col: cell.col }))
+  }
+
+  const lastTapTimeRef = React.useRef<number>(0)
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const currentTime = Date.now()
+    const timeDiff = currentTime - lastTapTimeRef.current
+
+    if (timeDiff < MOBILE_DOUBLE_TAP_DELAY && timeDiff > 0) {
+      e.preventDefault()
+
+      if (!cell.isRevealed) {
+        dispatch(toggleFlag({ row: cell.row, col: cell.col }))
+      }
+
+      lastTapTimeRef.current = 0
+    } else {
+      lastTapTimeRef.current = currentTime
+    }
   }
 
   const getCellContent = () => {
@@ -59,7 +90,8 @@ const Cell: React.FC<CellProps> = memo(({ cell }) => {
       className={getCellClasses()}
       onClick={handleClick}
       onContextMenu={handleRightClick}
-      disabled={cell.isRevealed}
+      onTouchEnd={handleTouchEnd}
+      disabled={false}
       data-count={
         cell.isRevealed && !cell.isMine && cell.neighborMines > 0
           ? cell.neighborMines
