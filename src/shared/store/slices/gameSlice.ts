@@ -16,7 +16,8 @@ const createInitialBoard = (): Cell[][] => {
         isMine: false,
         isRevealed: false,
         isFlagged: false,
-        neighborMines: 0
+        neighborMines: 0,
+        isWrongFlag: false
       }
     }
   }
@@ -28,7 +29,9 @@ const placeMines = (
   excludeRow: number,
   excludeCol: number
 ): Cell[][] => {
-  const newBoard = board.map((row) => row.map((cell) => ({ ...cell })))
+  const newBoard = board.map((row) =>
+    row.map((cell) => ({ ...cell, isWrongFlag: false }))
+  )
   const excludeIndex = excludeRow * BOARD_SIZE + excludeCol
   const mines = generateMines(BOARD_SIZE * BOARD_SIZE, MINE_COUNT, excludeIndex)
 
@@ -135,11 +138,13 @@ const gameSlice = createSlice({
       if (cell.isMine) {
         state.gameStatus = 'lost'
 
-        // Reveal all mines
+        // Reveal all mines and mark wrong flags
         state.board.forEach((row) => {
           row.forEach((cell) => {
             if (cell.isMine) {
               cell.isRevealed = true
+            } else if (cell.isFlagged) {
+              cell.isWrongFlag = true
             }
           })
         })

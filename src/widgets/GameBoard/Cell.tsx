@@ -6,6 +6,7 @@ import { revealCell, toggleFlag } from '@/shared/store/slices'
 
 import Bomb from '@/assets/bomb.svg?react'
 import Flag from '@/assets/flag.svg?react'
+import XBomb from '@/assets/x-bomb.svg?react'
 
 import styles from './Cell.module.scss'
 
@@ -65,6 +66,8 @@ const Cell: React.FC<CellProps> = memo(({ cell }) => {
   }
 
   const getCellContent = () => {
+    if (cell.isWrongFlag) return <XBomb />
+    if (cell.isRevealed && cell.isMine) return <Bomb />
     if (cell.isFlagged) return <Flag />
     if (!cell.isRevealed) return ''
     if (cell.isMine) return <Bomb />
