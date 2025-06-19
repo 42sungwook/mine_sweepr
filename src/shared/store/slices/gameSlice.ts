@@ -188,12 +188,18 @@ const gameSlice = createSlice({
         cell.isFlagged = true
         state.flagCount += 1
       }
+    },
+
+    tickTimer: (state) => {
+      if (state.gameStatus === 'playing' && state.timer < 999) {
+        state.timer += 1
+      }
     }
   }
 })
 
 // actions
-export const { initGame, revealCell, toggleFlag } = gameSlice.actions
+export const { initGame, revealCell, toggleFlag, tickTimer } = gameSlice.actions
 
 // reducer
 export default gameSlice.reducer

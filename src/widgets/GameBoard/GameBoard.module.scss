@@ -1,9 +1,17 @@
+// Variables
+$primary-bg: #c0c0c0;
+$dark-shadow: #808080;
+$light-shadow: #ffffff;
+
 .gameBoard {
   display: inline-block;
-  border: $inset-border;
+  border-top: 2px solid $dark-shadow;
+  border-left: 2px solid $dark-shadow;
+  border-right: 2px solid $light-shadow;
+  border-bottom: 2px solid $light-shadow;
+  border-radius: 0;
+
   background: $primary-bg;
-  padding: 10px;
-  border-radius: 4px;
 }
 
 .boardRow {
