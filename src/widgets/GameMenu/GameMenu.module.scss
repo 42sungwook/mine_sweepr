@@ -13,52 +13,52 @@
 
 .gameSettingItem {
   background: $primary-bg;
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: 'MS Sans Serif', sans-serif;
+  border: $thin-border-width solid transparent;
+  min-width: 40px;
+  font-size: $font-size-lg;
+  font-family: $primary-font;
   color: #000;
   user-select: none;
-  min-width: 40px;
   text-align: left;
+  cursor: pointer;
 }
 
 .gameMenu {
   position: absolute;
+  padding: $p-sm 0;
   top: 100%;
   left: 0;
   background: $primary-bg;
-  border: 1px solid #000;
+  border: $thin-border-width solid #000;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  z-index: $z-modal;
   min-width: 140px;
-  font-size: 11px;
-  font-family: 'MS Sans Serif', sans-serif;
+  font-family: $primary-font;
 }
 
 .menuItem {
   display: flex;
   justify-content: space-between;
-  padding: 2px 16px 2px 20px;
+  align-items: center;
+  padding: $p-sm $p-xl $p-sm $p-2xl;
   cursor: pointer;
   color: #000;
   white-space: nowrap;
 
   &:hover {
-    color: #0078d4;
+    color: $button-hover-color;
   }
 }
 
 .shortcut {
-  color: #666;
-  font-size: 10px;
-  margin-left: 20px;
+  color: $shortcut-color;
+  font-size: $font-size-sm;
 }
 
 .menuDivider {
   height: 1px;
   background: $dark-shadow;
-  margin: 2px 1px;
-  border-top: 1px solid $dark-shadow;
-  border-bottom: 1px solid $light-shadow;
+  margin: $p-sm;
+  border-top: $thin-border-width solid $dark-shadow;
+  border-bottom: $thin-border-width solid $light-shadow;
 }

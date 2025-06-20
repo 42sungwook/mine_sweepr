@@ -1,0 +1,41 @@
+.gameHeader {
+  @include border-inset;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $primary-bg;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.mineCounter,
+.timer {
+  @include border-inset;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $timer-bg;
+  color: $timer-color;
+  font-family: $monospace-font;
+  font-size: $font-size-xl;
+  font-weight: bold;
+  width: 48px;
+  height: 32px;
+}
+
+.restartButton {
+  @include button-3d;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: $font-size-xl;
+
+  &:active {
+    transform: translate(1px, 1px);
+  }
+}

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { GameBoard } from '@/widgets'
-import GameHeader from '@/widgets/GameHeader'
-import GameMenu from '@/widgets/GameMenu'
+import GameHeader from '@/widgets/GameHeader/GameHeader'
+import GameMenu from '@/widgets/GameMenu/GameMenu'
 
 import styles from './GamePage.module.scss'
 

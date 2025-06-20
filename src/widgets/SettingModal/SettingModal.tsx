@@ -86,7 +86,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onClose }) => {
 
           <div className={styles.content}>
             <div className={styles.formGroup}>
-              <label className={styles.label}>Game Width:</label>
+              <label className={styles.label}>Game Width (max 100):</label>
               <input
                 type="number"
                 className={styles.input}
@@ -98,7 +98,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>Game Height:</label>
+              <label className={styles.label}>Game Height (max 100):</label>
               <input
                 type="number"
                 className={styles.input}

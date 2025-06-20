@@ -5,7 +5,7 @@ import { initGame, setDifficulty } from '@/shared/store/slices'
 import type { DifficultyLevel } from '@/shared/constants'
 
 import styles from './GameMenu.module.scss'
-import SettingModal from './SettingModal'
+import SettingModal from '../SettingModal/SettingModal'
 
 //
 //
@@ -64,7 +64,7 @@ const GameMenu: React.FC = () => {
         setIsSettingModalOpen(true)
         break
       case 'exit':
-        console.log('Exit game')
+        window.close()
         break
     }
   }

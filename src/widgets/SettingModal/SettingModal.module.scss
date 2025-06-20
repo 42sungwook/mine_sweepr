@@ -1,0 +1,110 @@
+.modalWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: $z-modal;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $modal-overlay-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-modal;
+  padding: $p-2xl;
+}
+
+.modal {
+  @include border-outset;
+
+  width: 280px;
+  background: $primary-bg;
+  font-family: $primary-font;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.header {
+  background: linear-gradient(90deg, #0a246a 0%, #a6caf0 100%);
+  color: white;
+  padding: $p-sm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.closeButton {
+  @include button-base;
+
+  width: 30px;
+  height: 20px;
+  font-size: $font-size-xs;
+  color: black;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.content {
+  padding: $p-lg;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: $m-sm;
+  justify-content: space-between;
+}
+
+.label {
+  color: black;
+  width: 140px;
+  text-align: left;
+}
+
+.input {
+  @include input-inset;
+
+  width: 50px;
+  text-align: right;
+}
+
+.info {
+  @include border-inset($thin-border-width);
+
+  margin-top: $m-lg;
+  padding-top: $p-sm;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
+  color: black;
+
+  p {
+    margin: $m-sm 0;
+  }
+}
+
+.footer {
+  padding: $p-sm $p-lg $p-lg;
+  display: flex;
+  justify-content: center;
+  gap: $g-sm;
+}
+
+.button {
+  @include button-base;
+
+  padding: $p-sm $p-lg;
+  font-weight: normal;
+  color: black;
+}

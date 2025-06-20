@@ -1,30 +1,27 @@
+$cell-size: 16px;
+
 .cell {
+  @include border-outset;
+
   width: $cell-size;
   height: $cell-size;
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
-  border-right: 2px solid #808080;
-  border-bottom: 2px solid #808080;
   background: $primary-bg;
-  font-size: 14px;
+  font-size: $font-size-lg;
   font-weight: bold;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
   padding: 0;
   outline: none;
+  cursor: pointer;
 
   &:active:not(:disabled):not(.revealed) {
-    border-top: 2px solid #808080;
-    border-left: 2px solid #808080;
-    border-right: 2px solid #ffffff;
-    border-bottom: 2px solid #ffffff;
+    @include border-inset;
   }
 
   &.revealed {
-    border: 1px solid #808080;
+    border: $thin-border-width solid $dark-shadow;
     background: $primary-bg;
     cursor: default;
 
@@ -35,8 +32,8 @@
 }
 
 .bombIcon {
-  width: 16px;
-  height: 16px;
+  width: $cell-size;
+  height: $cell-size;
   background-image: url('@/assets/bomb.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -45,8 +42,8 @@
 }
 
 .flagIcon {
-  width: 14px;
-  height: 14px;
+  width: $font-size-lg;
+  height: $font-size-lg;
   background-image: url('@/assets/flag.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -55,8 +52,8 @@
 }
 
 .xBombIcon {
-  width: 16px;
-  height: 16px;
+  width: $cell-size;
+  height: $cell-size;
   background-image: url('@/assets/x-bomb.png');
   background-size: contain;
   background-repeat: no-repeat;

@@ -1,1 +1,50 @@
+@use './variables' as *;
 
+@mixin border-outset($width: $border-width) {
+  border-top: $width solid $light-shadow;
+  border-left: $width solid $light-shadow;
+  border-right: $width solid $dark-shadow;
+  border-bottom: $width solid $dark-shadow;
+}
+
+@mixin border-inset($width: $border-width) {
+  border-top: $width solid $dark-shadow;
+  border-left: $width solid $dark-shadow;
+  border-right: $width solid $light-shadow;
+  border-bottom: $width solid $light-shadow;
+}
+
+@mixin button-base {
+  @include border-outset;
+
+  background: $primary-bg;
+  font-family: $primary-font;
+  transition: $transition-fast;
+  outline: none;
+  cursor: pointer;
+
+  &:active {
+    @include border-inset;
+  }
+}
+
+@mixin button-3d {
+  @include button-base;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+}
+
+@mixin input-inset {
+  @include border-inset($thin-border-width);
+
+  background: white;
+  padding: $p-sm;
+  font-family: $primary-font;
+
+  &:focus {
+    outline: none;
+    background: white;
+  }
+}

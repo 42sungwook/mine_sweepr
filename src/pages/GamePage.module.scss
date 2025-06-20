@@ -4,31 +4,28 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: $p-2xl;
   background: $page-bg;
-  font-family: 'MS Sans Serif', sans-serif;
+  font-family: $primary-font;
 }
 
 .gameContainer {
+  @include border-outset;
+
   display: flex;
   flex-direction: column;
-  gap: 10px;
   background: $primary-bg;
-  border-top: 2px solid $light-shadow;
-  border-left: 2px solid $light-shadow;
-  border-right: 2px solid $dark-shadow;
-  border-bottom: 2px solid $dark-shadow;
-  border-radius: 0;
-  padding: 6px;
+  gap: $g-md;
+  padding: $p-md;
 }
 
 .gameSettingContainer {
   display: flex;
   flex-direction: column;
   background-color: $primary-bg;
-  border-radius: 6px;
-  padding: 6px;
-  font-size: 12px;
+  border-radius: $r-md;
+  padding: $p-md;
+  font-size: $font-size-md;
   font-weight: bold;
-  gap: 6px;
+  gap: $p-md;
 }

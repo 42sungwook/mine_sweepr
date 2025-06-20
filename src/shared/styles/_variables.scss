@@ -1,11 +1,52 @@
-// Variables
+// Colors
 $page-bg: #000000;
 $primary-bg: #c0c0c0;
-$inset-border: 2px inset #c0c0c0;
-$outset-border: 2px outset #c0c0c0;
 $mine-color: #ff0000;
 $timer-bg: #000;
 $timer-color: #ff0000;
-$cell-size: 16px;
 $dark-shadow: #808080;
 $light-shadow: #ffffff;
+$modal-overlay-bg: rgba(0, 0, 0, 0.3);
+$button-hover-color: #0078d4;
+$shortcut-color: #666;
+
+// Borders
+$border-width: 2px;
+$thin-border-width: 1px;
+$inset-border: 2px inset #c0c0c0;
+$outset-border: 2px outset #c0c0c0;
+
+// Spacing
+$p-xs: 2px;
+$p-sm: 4px;
+$p-md: 8px;
+$p-lg: 12px;
+$p-xl: 16px;
+$p-2xl: 20px;
+
+// Gap
+$g-sm: 4px;
+$g-md: 8px;
+$g-lg: 12px;
+
+// Margin
+$m-sm: 4px;
+$m-lg: 12px;
+
+// Radius
+$r-md: 8px;
+
+// Fonts
+$primary-font: 'MS Sans Serif', sans-serif;
+$monospace-font: 'Courier New', monospace;
+$font-size-xs: 9px;
+$font-size-sm: 10px;
+$font-size-md: 12px;
+$font-size-lg: 14px;
+$font-size-xl: 20px;
+
+// Z-index
+$z-modal: 1000;
+
+// Transitions
+$transition-fast: all 0.1s ease;

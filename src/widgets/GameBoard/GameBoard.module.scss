@@ -1,20 +1,10 @@
-// Variables
-$primary-bg: #c0c0c0;
-$dark-shadow: #808080;
-$light-shadow: #ffffff;
-
 .gameBoard {
-  display: inline-block;
-  border-top: 2px solid $dark-shadow;
-  border-left: 2px solid $dark-shadow;
-  border-right: 2px solid $light-shadow;
-  border-bottom: 2px solid $light-shadow;
-  border-radius: 0;
+  @include border-inset;
 
   background: $primary-bg;
+  display: inline-block;
 }
 
 .boardRow {
   display: flex;
-  line-height: 0;
 }

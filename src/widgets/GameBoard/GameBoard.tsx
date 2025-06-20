@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppSelector } from '@/shared/store'
 
-import Cell from './Cell'
+import { Cell } from '@/features'
 
 import styles from './GameBoard.module.scss'
 
