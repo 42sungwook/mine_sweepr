@@ -15,7 +15,6 @@
   margin: 0;
   padding: 0;
   outline: none;
-  transition: all 0.1s ease;
 
   // 다른 셀이 오른쪽 클릭되는 현상 방지
   * {
@@ -33,25 +32,38 @@
     border: 1px solid #808080;
     background: $primary-bg;
     cursor: default;
-
-    &:hover {
-      background: $primary-bg;
-    }
-
-    &.mine {
-      background: $mine-color;
-      color: #000;
-    }
   }
+}
 
-  &.flagged {
-    background: $primary-bg;
-  }
+// SVG 아이콘들을 CSS background-image로 최적화
+.bombIcon {
+  width: 16px;
+  height: 16px;
+  background-image: url('@/assets/bomb.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
 
-  &.wrongFlag {
-    background: $primary-bg;
-    border: 1px solid #808080;
-  }
+.flagIcon {
+  width: 16px;
+  height: 16px;
+  background-image: url('@/assets/flag.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.xBombIcon {
+  width: 16px;
+  height: 16px;
+  background-image: url('@/assets/x-bomb.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
 }
 
 // Number colors for neighbor mine counts
