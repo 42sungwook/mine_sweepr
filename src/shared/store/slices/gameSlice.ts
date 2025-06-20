@@ -25,7 +25,8 @@ const createInitialBoardWithSize = (
         isRevealed: false,
         isFlagged: false,
         neighborMines: 0,
-        isWrongFlag: false
+        isWrongFlag: false,
+        isExploded: false
       }
     }
   }
@@ -39,7 +40,7 @@ const placeMines = (
   mineCount: number
 ): Cell[][] => {
   const newBoard = board.map((row) =>
-    row.map((cell) => ({ ...cell, isWrongFlag: false }))
+    row.map((cell) => ({ ...cell, isWrongFlag: false, isExploded: false }))
   )
   const boardWidth = board[0]?.length || 0
   const boardHeight = board.length
@@ -171,6 +172,9 @@ const gameSlice = createSlice({
 
       if (cell.isMine) {
         state.gameStatus = 'lost'
+
+        // 클릭된 지뢰를 폭발한 지뢰로 표시
+        cell.isExploded = true
 
         // 모든 지뢰 표시 및 잘못된 플래그 표시
         state.board.forEach((row) => {

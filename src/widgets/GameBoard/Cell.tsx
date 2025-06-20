@@ -88,8 +88,8 @@ const Cell: React.FC<CellProps> = memo(({ cell }) => {
 
     if (cell.isRevealed) {
       classes.push(styles.revealed)
-      if (cell.isMine) {
-        classes.push(styles.mine)
+      if (cell.isExploded) {
+        classes.push(styles.exploded)
       }
     }
 

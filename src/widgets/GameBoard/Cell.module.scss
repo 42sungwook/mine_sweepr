@@ -27,6 +27,10 @@
     border: 1px solid #808080;
     background: $primary-bg;
     cursor: default;
+
+    &.exploded {
+      background: $mine-color;
+    }
   }
 }
 

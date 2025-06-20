@@ -6,7 +6,8 @@ export interface Cell {
   isRevealed: boolean
   neighborMines: number
   isFlagged: boolean
-  isWrongFlag: boolean // not mine when revealed
+  isWrongFlag: boolean // 결과에서 플래그가 있는데 지뢰가 아닌 경우
+  isExploded: boolean // 마지막에 클릭된 지뢰 (빨간 배경)
 }
 
 export interface GameState {
