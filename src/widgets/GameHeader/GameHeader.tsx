@@ -62,7 +62,10 @@ const GameHeader: React.FC = () => {
   }
 
   const formatNumber = (num: number): string => {
-    return num.toString().padStart(3, '0')
+		// 100의 자리까지만 보이기
+    const displayNum = num % 1000
+
+    return displayNum.toString().padStart(3, '0')
   }
 
   const remainingMines = mineCount - flagCount

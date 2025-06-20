@@ -95,6 +95,7 @@ const revealEmptyCells = (
       newBoard[row][col].isRevealed = true
     }
 
+		// 주변 지뢰가 없는 경우만 bfs 탐색
     if (newBoard[row][col].neighborMines === 0) {
       const neighbors = getNeighbors(row, col, boardWidth, boardHeight)
 
@@ -226,19 +227,19 @@ const gameSlice = createSlice({
     },
 
     tickTimer: (state) => {
-      if (state.gameStatus === 'playing' && state.timer < 999) {
+      if (state.gameStatus === 'playing') {
         state.timer += 1
       }
     },
 
-		/**
-		 * Area Open (ref: https://freeminesweeper.org/how-to-play-minesweeper.php)
-		 * If an open square has the correct number of marked neighboring mines,
-		 * click on the open square to open all remaining unopened neighbor squares all at once.
-		 * If an incorrect number of neighbors are marked, or all neighbors are marked or open,
-		 * clicking the square has no effect. If an incorrect neighbor is marked, this will cause instant loss.
-		 * Yes we find this one confusing too.
-		 */
+    /**
+     * Area Open (ref: https://freeminesweeper.org/how-to-play-minesweeper.php)
+     * If an open square has the correct number of marked neighboring mines,
+     * click on the open square to open all remaining unopened neighbor squares all at once.
+     * If an incorrect number of neighbors are marked, or all neighbors are marked or open,
+     * clicking the square has no effect. If an incorrect neighbor is marked, this will cause instant loss.
+     * Yes we find this one confusing too.
+     */
     areaOpen: (state, action: PayloadAction<{ row: number; col: number }>) => {
       const { row, col } = action.payload
       const cell = state.board[row][col]
