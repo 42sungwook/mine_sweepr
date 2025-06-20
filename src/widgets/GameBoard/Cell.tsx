@@ -1,8 +1,12 @@
 import React, { memo, useCallback } from 'react'
 
 import { type Cell as CellType } from '@/shared/types'
-import { useAppDispatch } from '@/shared/store'
-import { revealCell, toggleFlag } from '@/shared/store/slices'
+import {
+  useAppDispatch,
+  revealCell,
+  toggleFlag,
+  areaOpen
+} from '@/shared/store'
 
 import styles from './Cell.module.scss'
 
@@ -25,13 +29,30 @@ const Cell: React.FC<CellProps> = memo(({ cell }) => {
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
-      if (cell.isFlagged || cell.isRevealed) {
+      if (cell.isFlagged) {
         e.preventDefault()
         return
       }
+
+      // Area Open
+      if (cell.isRevealed) {
+        if (cell.neighborMines > 0) {
+          dispatch(areaOpen({ row: cell.row, col: cell.col }))
+        }
+        e.preventDefault()
+        return
+      }
+
       dispatch(revealCell({ row: cell.row, col: cell.col }))
     },
-    [cell.row, cell.col, cell.isFlagged, cell.isRevealed, dispatch]
+    [
+      cell.row,
+      cell.col,
+      cell.isFlagged,
+      cell.isRevealed,
+      cell.neighborMines,
+      dispatch
+    ]
   )
 
   const handleRightClick = useCallback(

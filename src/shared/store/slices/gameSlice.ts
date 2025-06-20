@@ -231,6 +231,91 @@ const gameSlice = createSlice({
       }
     },
 
+		/**
+		 * Area Open (ref: https://freeminesweeper.org/how-to-play-minesweeper.php)
+		 * If an open square has the correct number of marked neighboring mines,
+		 * click on the open square to open all remaining unopened neighbor squares all at once.
+		 * If an incorrect number of neighbors are marked, or all neighbors are marked or open,
+		 * clicking the square has no effect. If an incorrect neighbor is marked, this will cause instant loss.
+		 * Yes we find this one confusing too.
+		 */
+    areaOpen: (state, action: PayloadAction<{ row: number; col: number }>) => {
+      const { row, col } = action.payload
+      const cell = state.board[row][col]
+
+      if (
+        !cell.isRevealed ||
+        cell.isMine ||
+        cell.neighborMines === 0 ||
+        state.gameStatus === 'won' ||
+        state.gameStatus === 'lost'
+      ) {
+        return
+      }
+
+      const neighbors = getNeighbors(
+        row,
+        col,
+        state.boardWidth,
+        state.boardHeight
+      )
+      const flaggedNeighbors = neighbors.filter(
+        ([r, c]) => state.board[r][c].isFlagged
+      )
+      const unrevealedNeighbors = neighbors.filter(
+        ([r, c]) =>
+          !state.board[r][c].isRevealed && !state.board[r][c].isFlagged
+      )
+
+      if (flaggedNeighbors.length !== cell.neighborMines) {
+        return
+      }
+
+      if (unrevealedNeighbors.length === 0) {
+        return
+      }
+
+      let hitMine = false
+
+      for (const [r, c] of unrevealedNeighbors) {
+        const neighborCell = state.board[r][c]
+        if (neighborCell.isMine) {
+          hitMine = true
+          neighborCell.isExploded = true
+          break
+        }
+      }
+
+      if (hitMine) {
+        state.gameStatus = 'lost'
+
+        state.board.forEach((row) => {
+          row.forEach((cell) => {
+            if (cell.isMine) {
+              cell.isRevealed = true
+            } else if (cell.isFlagged) {
+              cell.isWrongFlag = true
+            }
+          })
+        })
+      } else {
+        // 안전한 경우 - 모든 남은 셀들을 열기
+        for (const [r, c] of unrevealedNeighbors) {
+          state.board = revealEmptyCells(state.board, r, c)
+        }
+
+        // 승리 조건 확인
+        const totalCells = state.boardWidth * state.boardHeight
+        const revealedCells = state.board
+          .flat()
+          .filter((cell) => cell.isRevealed).length
+
+        if (revealedCells === totalCells - state.mineCount) {
+          state.gameStatus = 'won'
+        }
+      }
+    },
+
     setDifficulty: (state, action: PayloadAction<DifficultyLevel>) => {
       const difficulty = DIFFICULTY_SETTINGS[action.payload]
       state.boardWidth = difficulty.width
@@ -283,6 +368,7 @@ export const {
   revealCell,
   toggleFlag,
   tickTimer,
+  areaOpen,
   setDifficulty,
   setCustomDifficulty
 } = gameSlice.actions
