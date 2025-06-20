@@ -34,11 +34,10 @@
   }
 }
 
-// SVG 아이콘들을 CSS background-image로 최적화
 .bombIcon {
   width: 16px;
   height: 16px;
-  background-image: url('@/assets/bomb.svg');
+  background-image: url('@/assets/bomb.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -46,9 +45,9 @@
 }
 
 .flagIcon {
-  width: 16px;
-  height: 16px;
-  background-image: url('@/assets/flag.svg');
+  width: 14px;
+  height: 14px;
+  background-image: url('@/assets/flag.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -58,7 +57,7 @@
 .xBombIcon {
   width: 16px;
   height: 16px;
-  background-image: url('@/assets/x-bomb.svg');
+  background-image: url('@/assets/x-bomb.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
