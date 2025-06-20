@@ -5,6 +5,7 @@ import { initGame, setDifficulty } from '@/shared/store/slices'
 import type { DifficultyLevel } from '@/shared/constants'
 
 import styles from './GameMenu.module.scss'
+import SettingModal from './SettingModal'
 
 //
 //
@@ -14,6 +15,7 @@ const GameMenu: React.FC = () => {
   const dispatch = useAppDispatch()
   const [isGameMenuOpen, setIsGameMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,7 +61,7 @@ const GameMenu: React.FC = () => {
         dispatch(setDifficulty('EXPERT' as DifficultyLevel))
         break
       case 'custom':
-        // TODO: Custom 설정 모달 열기
+        setIsSettingModalOpen(true)
         break
       case 'exit':
         console.log('Exit game')
@@ -125,6 +127,10 @@ const GameMenu: React.FC = () => {
           </div>
         )}
       </div>
+      <SettingModal
+        isOpen={isSettingModalOpen}
+        onClose={() => setIsSettingModalOpen(false)}
+      />
     </div>
   )
 }
