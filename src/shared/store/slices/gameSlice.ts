@@ -2,14 +2,12 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 import { type GameState, type Cell } from '@/shared/types'
 import { DIFFICULTY_SETTINGS, type DifficultyLevel } from '@/shared/constants'
-import { generateMines, getNeighbors } from '@/shared/utils'
-
-const createInitialBoard = (): Cell[][] => {
-  return createInitialBoardWithSize(
-    DIFFICULTY_SETTINGS.INTERMEDIATE.width,
-    DIFFICULTY_SETTINGS.INTERMEDIATE.height
-  )
-}
+import {
+  generateMines,
+  getNeighbors,
+  saveGameSettings,
+  loadGameSettings
+} from '@/shared/utils'
 
 const createInitialBoardWithSize = (
   width: number,
@@ -110,15 +108,28 @@ const revealEmptyCells = (
   return newBoard
 }
 
+// localStorage에서 설정 불러오기
+const savedSettings = loadGameSettings()
+const defaultSettings = DIFFICULTY_SETTINGS.INTERMEDIATE
+
+const initialSettings = savedSettings || {
+  width: defaultSettings.width,
+  height: defaultSettings.height,
+  mines: defaultSettings.mines
+}
+
 const initialState: GameState = {
-  board: createInitialBoard(),
+  board: createInitialBoardWithSize(
+    initialSettings.width,
+    initialSettings.height
+  ),
   gameStatus: 'waiting',
-  mineCount: DIFFICULTY_SETTINGS.INTERMEDIATE.mines,
+  mineCount: initialSettings.mines,
   flagCount: 0,
   timer: 0,
   isFirstClick: true,
-  boardWidth: DIFFICULTY_SETTINGS.INTERMEDIATE.width,
-  boardHeight: DIFFICULTY_SETTINGS.INTERMEDIATE.height
+  boardWidth: initialSettings.width,
+  boardHeight: initialSettings.height
 }
 
 const gameSlice = createSlice({
@@ -229,6 +240,13 @@ const gameSlice = createSlice({
       state.flagCount = 0
       state.timer = 0
       state.isFirstClick = true
+
+      saveGameSettings({
+        width: difficulty.width,
+        height: difficulty.height,
+        mines: difficulty.mines,
+        difficultyLevel: action.payload
+      })
     },
 
     setCustomDifficulty: (
@@ -244,6 +262,13 @@ const gameSlice = createSlice({
       state.flagCount = 0
       state.timer = 0
       state.isFirstClick = true
+
+      saveGameSettings({
+        width,
+        height,
+        mines,
+        difficultyLevel: 'CUSTOM'
+      })
     }
   }
 })

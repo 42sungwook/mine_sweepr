@@ -1,3 +1,5 @@
+import { GAME_SETTINGS_KEY } from './constants'
+
 export const generateMines = (
   totalCells: number,
   mineCount: number,
@@ -39,4 +41,31 @@ export const getNeighbors = (
     }
   }
   return neighbors
+}
+
+export interface GameSettings {
+  width: number
+  height: number
+  mines: number
+  difficultyLevel?: string
+}
+
+export const saveGameSettings = (settings: GameSettings): void => {
+  try {
+    localStorage.setItem(GAME_SETTINGS_KEY, JSON.stringify(settings))
+  } catch (error) {
+    console.warn('Failed to save game settings to localStorage:', error)
+  }
+}
+
+export const loadGameSettings = (): GameSettings | null => {
+  try {
+    const saved = localStorage.getItem(GAME_SETTINGS_KEY)
+    if (saved) {
+      return JSON.parse(saved)
+    }
+  } catch (error) {
+    console.warn('Failed to load game settings from localStorage:', error)
+  }
+  return null
 }

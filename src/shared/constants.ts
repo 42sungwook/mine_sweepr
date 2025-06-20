@@ -20,3 +20,5 @@ export const DIFFICULTY_SETTINGS = Object.freeze({
 })
 
 export type DifficultyLevel = keyof typeof DIFFICULTY_SETTINGS
+
+export const GAME_SETTINGS_KEY = 'minesweeper-game-settings'
