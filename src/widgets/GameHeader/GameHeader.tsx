@@ -27,6 +27,27 @@ const GameHeader: React.FC = () => {
     }
   }, [gameStatus, dispatch])
 
+  // 게임 승리 시 알림
+  useEffect(() => {
+    if (gameStatus === 'won') {
+      const formatTime = (seconds: number): string => {
+        const minutes = Math.floor(seconds / 60)
+        const remainingSeconds = seconds % 60
+        return minutes > 0
+          ? `${minutes}분 ${remainingSeconds}초`
+          : `${remainingSeconds}초`
+      }
+
+      setTimeout(() => {
+        alert(
+          `🎉 축하합니다! 게임에서 승리했습니다! 🎉\n플레이 시간: ${formatTime(
+            timer
+          )}`
+        )
+      }, 100)
+    }
+  }, [gameStatus, timer])
+
   // 전역 마우스 이벤트 리스너
   useEffect(() => {
     const handleMouseDown = () => setIsMouseDown(true)
@@ -62,7 +83,7 @@ const GameHeader: React.FC = () => {
   }
 
   const formatNumber = (num: number): string => {
-		// 100의 자리까지만 보이기
+    // 100의 자리까지만 보이기
     const displayNum = num % 1000
 
     return displayNum.toString().padStart(3, '0')
